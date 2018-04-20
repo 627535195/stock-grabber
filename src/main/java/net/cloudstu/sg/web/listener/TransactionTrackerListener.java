@@ -2,7 +2,6 @@ package net.cloudstu.sg.web.listener;
 
 
 import net.cloudstu.sg.dao.TrackerUserDao;
-import net.cloudstu.sg.entity.StockHoldModel;
 import net.cloudstu.sg.entity.TrackerUserModel;
 import net.cloudstu.sg.grab.TransactionTrackerRepo;
 import net.cloudstu.sg.util.SimpleTimer;
@@ -11,7 +10,6 @@ import org.springframework.util.StringUtils;
 
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
-import java.util.Arrays;
 import java.util.List;
 import java.util.TimerTask;
 import java.util.stream.Collectors;

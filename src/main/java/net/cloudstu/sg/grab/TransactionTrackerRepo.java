@@ -65,42 +65,6 @@ public class TransactionTrackerRepo extends NeedLoginRepo implements AfterExtrac
     }
 
     /**
-     * 构造交易信息
-     *
-     * @param tt 交易实体
-     * @return
-     */
-    private String getTransactionInfo(TransactionTrackerModel tt) {
-        TrackerUserDao trackerUserDao = SpringUtil.getBean(TrackerUserDao.class);
-        TrackerUserModel tu = trackerUserDao.selectByUserId(tt.getUserId());
-
-
-        return String.format("%s【%s】！价格【%s】申请时间【%s】状态【%s】买入人类型【%s】",
-                tt.getAction(),
-                tt.getName(),
-                tt.getApplyTime(),
-                new SimpleDateFormat("yyyy-MM-dd hh:mm:ss").format(new Date(tt.getApplyTime())),
-                tt.getState(),
-                tu.getUserId(),
-                getTypeDesc(tu));
-    }
-
-    private String getTypeDesc(TrackerUserModel tu) {
-        if(tu == null) {
-            return "";
-        }
-
-        switch (tu.getType()) {
-            case 1 :
-                return "追高";
-            case 2 :
-                return "稳健";
-            default:return "";
-        }
-
-    }
-
-    /**
      * 抓取最新用户交易记录
      *
      * @param month  追踪月，比如当月是72
@@ -155,6 +119,43 @@ public class TransactionTrackerRepo extends NeedLoginRepo implements AfterExtrac
                 ooSpider.close();
             }
         }
+    }
+
+
+    /**
+     * 构造交易信息
+     *
+     * @param tt 交易实体
+     * @return
+     */
+    private String getTransactionInfo(TransactionTrackerModel tt) {
+        TrackerUserDao trackerUserDao = SpringUtil.getBean(TrackerUserDao.class);
+        TrackerUserModel tu = trackerUserDao.selectByUserId(tt.getUserId());
+
+
+        return String.format("%s【%s】！价格【%s】申请时间【%s】状态【%s】买入人类型【%s】",
+                tt.getAction(),
+                tt.getName(),
+                tt.getApplyTime(),
+                new SimpleDateFormat("yyyy-MM-dd hh:mm:ss").format(new Date(tt.getApplyTime())),
+                tt.getState(),
+                tu.getUserId(),
+                getTypeDesc(tu));
+    }
+
+    private String getTypeDesc(TrackerUserModel tu) {
+        if(tu == null) {
+            return "";
+        }
+
+        switch (tu.getType()) {
+            case 1 :
+                return "追高";
+            case 2 :
+                return "稳健";
+            default:return "";
+        }
+
     }
 
     private static String getGrabUrl(int month, long userId) {

@@ -51,6 +51,7 @@ public class TrackerRankRepo extends NeedLoginRepo implements AfterExtractor{
         OOSpider ooSpider = null;
         try {
             ooSpider = buildOOSpider();
+            System.out.println(getGrabUrl(month));
             TrackerRankRepo repo = ooSpider.get(getGrabUrl(month));
 
             if (repo == null) {//没有抓取到内容就需要重新登录，因为有可能是因为session过期导致cookie更换
@@ -115,7 +116,7 @@ public class TrackerRankRepo extends NeedLoginRepo implements AfterExtractor{
     public static void main(String[] args) {
         new AnnotationConfigApplicationContext(RootConfig.class);
 
-        for(int i=65; i<73; i++) {
+        for(int i=69; i<73; i++) {
             grab(i);
         }
 
