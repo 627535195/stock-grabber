@@ -129,15 +129,15 @@ public class TransactionTrackerRepo extends NeedLoginRepo implements AfterExtrac
 
     /**
      * @param month
-     * @param userIdArray
+     * @param userIds
      * @see TransactionTrackerRepo#grab(int, long)
      */
-    public static void grab(int month, long[] userIdArray) {
+    public static void grab(int month, List<Long> userIds) {
 
         OOSpider ooSpider = null;
         try {
             ooSpider = buildOOSpider();
-            for (long userId : userIdArray) {
+            for (long userId : userIds) {
                 try {
                     TransactionTrackerRepo repo = ooSpider.get(getGrabUrl(month, userId));
                     if (repo == null) {//没有抓取到内容就需要重新登录，因为有可能是因为session过期导致cookie更换
