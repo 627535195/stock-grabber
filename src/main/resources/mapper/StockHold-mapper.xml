@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="net.cloudstu.sg.dao.StockHoldDao">
+
+    <resultMap id="stockHoldResultMap" type="transactionTrackerModel">
+        <id column="id" property="id" jdbcType="BIGINT"/>
+        <result column="code" property="code" jdbcType="VARCHAR"/>
+        <result column="name" property="name" jdbcType="VARCHAR"/>
+        <result column="now_price" property="nowPrice" jdbcType="DOUBLE"/>
+        <result column="expect_price" property="expectPrice" jdbcType="DOUBLE"/>
+        <result column="update_time" property="updateTime" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <sql id="stock_hold_fields">
+        code,name,now_price,expect_price,update_time
+    </sql>
+
+    <select id="selectAll" resultMap="stockHoldResultMap">
+        SELECT id,
+        <include refid="stock_hold_fields"/>
+        FROM stock_hold
+    </select>
+</mapper>

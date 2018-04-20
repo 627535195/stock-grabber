@@ -3,7 +3,7 @@ package net.cloudstu.sg.grab;
 import lombok.extern.slf4j.Slf4j;
 import net.cloudstu.sg.dao.CookieDao;
 import net.cloudstu.sg.entity.CookieModel;
-import net.cloudstu.sg.util.SpringUtils;
+import net.cloudstu.sg.util.SpringUtil;
 
 import java.util.Collections;
 import java.util.List;
@@ -36,7 +36,7 @@ public abstract class NeedLoginRepo {
             return cookies;
         }
 
-        CookieDao cookieDao = SpringUtils.getBean(CookieDao.class);
+        CookieDao cookieDao = SpringUtil.getBean(CookieDao.class);
         try {
             cookies = cookieDao.selectByDomain(domain);
 

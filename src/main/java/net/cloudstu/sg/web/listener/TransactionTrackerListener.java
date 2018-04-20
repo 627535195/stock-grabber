@@ -20,11 +20,13 @@ public class TransactionTrackerListener implements ServletContextListener {
     @Override
     public void contextInitialized(ServletContextEvent servletContextEvent) {
 
+        long[] userIds = {353465,417634,410360,120909,335243,352518};
+
         //按一定频率抓取 实验1号 278542 当月72 的交易记录 3秒一次
         SimpleTimer.scheduleAtFixedRate(new TimerTask() {
             @Override
             public void run() {
-                TransactionTrackerRepo.grab(72, 278542);
+                TransactionTrackerRepo.grab(72, userIds);
             }
         }, 2000L, 3000L);
     }

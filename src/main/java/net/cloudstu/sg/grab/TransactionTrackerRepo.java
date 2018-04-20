@@ -6,7 +6,7 @@ import net.cloudstu.sg.dao.TransactionTrackerDao;
 import net.cloudstu.sg.entity.CookieModel;
 import net.cloudstu.sg.entity.TransactionTrackerModel;
 import net.cloudstu.sg.entity.TransactionTrackerQueryModel;
-import net.cloudstu.sg.util.SpringUtils;
+import net.cloudstu.sg.util.SpringUtil;
 import net.cloudstu.sg.util.WxmpSender;
 import net.cloudstu.sg.util.formatter.StringTrimFormatter;
 import net.cloudstu.sg.util.formatter.ThisYearDateFormatter;
@@ -55,7 +55,7 @@ public class TransactionTrackerRepo extends NeedLoginRepo implements AfterExtrac
             WxmpSender.messageSendToAdmin(getTransactionInfo(tt));
 
             try {
-                SpringUtils.getBean(TransactionTrackerDao.class).create(tt);
+                SpringUtil.getBean(TransactionTrackerDao.class).create(tt);
             } catch (Exception e) {
                 log.error(e.getMessage(), e);
             }
@@ -146,9 +146,9 @@ public class TransactionTrackerRepo extends NeedLoginRepo implements AfterExtrac
      * @return
      */
     private boolean isLatest() {
-        if (applyTime == null || Math.abs(this.applyTime.getTime() - System.currentTimeMillis()) > EXPIRED_TIME) {
-            return false;
-        }
+//        if (applyTime == null || Math.abs(this.applyTime.getTime() - System.currentTimeMillis()) > EXPIRED_TIME) {
+//            return false;
+//        }
 
         TransactionTrackerQueryModel qm = TransactionTrackerQueryModel.builder()
                 .userId(this.userId)
@@ -156,7 +156,7 @@ public class TransactionTrackerRepo extends NeedLoginRepo implements AfterExtrac
                 .applyTime(this.applyTime.getTime())
                 .action(this.action)
                 .build();
-        List<TransactionTrackerModel> ttList = SpringUtils.getBean(TransactionTrackerDao.class).getByCondition(qm);
+        List<TransactionTrackerModel> ttList = SpringUtil.getBean(TransactionTrackerDao.class).getByCondition(qm);
         return CollectionUtils.isEmpty(ttList);
     }
 
