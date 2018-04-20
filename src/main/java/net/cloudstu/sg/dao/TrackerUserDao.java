@@ -2,6 +2,7 @@ package net.cloudstu.sg.dao;
 
 import net.cloudstu.sg.entity.TrackerUserModel;
 import org.apache.ibatis.annotations.Param;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
@@ -11,6 +12,7 @@ import java.util.List;
  * @author zhiming.li
  * @date 2018/4/20
  */
+@Repository
 public interface TrackerUserDao {
 
     /**
@@ -27,4 +29,14 @@ public interface TrackerUserDao {
      * @return
      */
     TrackerUserModel selectByUserId(@Param(value = "userId") long userId);
+
+    /**
+     * 插入被追踪的用户，如果存在则cnt+1
+     *
+     * @param trackerUser
+     */
+    void insert(TrackerUserModel trackerUser);
+
+
+
 }

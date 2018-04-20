@@ -9,9 +9,9 @@
     </resultMap>
 
     <sql id="tracker_user_fields">
-        user_id,user_name,type
+        user_id,user_name,type,cnt
     </sql>
-    
+
     <select id="selectByUserId" resultMap="trackerUserResultMap">
         select
         <include refid="tracker_user_fields"/>
@@ -24,4 +24,9 @@
         <include refid="tracker_user_fields"/>
         FROM tracker_user
     </select>
+
+    <insert id="insert" parameterType="trackerUserModel">
+        INSERT INTO tracker_user(<include refid="tracker_user_fields"/>) VALUE(#{userId},#{userName},0,1) ON DUPLICATE
+        KEY UPDATE cnt = cnt+1
+    </insert>
 </mapper>

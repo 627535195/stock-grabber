@@ -1,6 +1,7 @@
 package net.cloudstu.sg.entity;
 
 import lombok.Data;
+import lombok.ToString;
 
 /**
  * 被追踪的用户
@@ -9,8 +10,10 @@ import lombok.Data;
  * @date 2018/4/20
  */
 @Data
+@ToString
 public class TrackerUserModel {
     private long userId;
-    private long userName;
+    private String userName;
     private int type;
+    private int cnt;
 }
