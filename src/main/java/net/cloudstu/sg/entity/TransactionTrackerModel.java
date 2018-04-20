@@ -13,7 +13,7 @@ import lombok.ToString;
 @Data
 public class TransactionTrackerModel{
     private long id;
-    private String userId;
+    private long userId;
     private String name;
     private String action;
     private double applyPrice;

@@ -2,8 +2,10 @@ package net.cloudstu.sg.grab;
 
 import lombok.extern.slf4j.Slf4j;
 import net.cloudstu.sg.app.RootConfig;
+import net.cloudstu.sg.dao.TrackerUserDao;
 import net.cloudstu.sg.dao.TransactionTrackerDao;
 import net.cloudstu.sg.entity.CookieModel;
+import net.cloudstu.sg.entity.TrackerUserModel;
 import net.cloudstu.sg.entity.TransactionTrackerModel;
 import net.cloudstu.sg.entity.TransactionTrackerQueryModel;
 import net.cloudstu.sg.util.SpringUtil;
@@ -41,7 +43,7 @@ public class TransactionTrackerRepo extends NeedLoginRepo implements AfterExtrac
     public void afterProcess(Page page) {
         if (isLatest()) {
             TransactionTrackerModel tt = new TransactionTrackerModel();
-            tt.setUserId(this.userId);
+            tt.setUserId(Long.parseLong(this.userId));
             tt.setName(this.name);
             tt.setAction(this.action);
             tt.setApplyPrice(this.applyPrice);
@@ -69,11 +71,33 @@ public class TransactionTrackerRepo extends NeedLoginRepo implements AfterExtrac
      * @return
      */
     private String getTransactionInfo(TransactionTrackerModel tt) {
-        return String.format("%s【%s】！申请时间【%s】，状态【%s】",
+        TrackerUserDao trackerUserDao = SpringUtil.getBean(TrackerUserDao.class);
+        TrackerUserModel tu = trackerUserDao.selectByUserId(tt.getUserId());
+
+
+        return String.format("%s【%s】！价格【%s】申请时间【%s】状态【%s】买入人类型【%s】",
                 tt.getAction(),
                 tt.getName(),
+                tt.getApplyTime(),
                 new SimpleDateFormat("yyyy-MM-dd hh:mm:ss").format(new Date(tt.getApplyTime())),
-                tt.getState());
+                tt.getState(),
+                tu.getUserId(),
+                getTypeDesc(tu));
+    }
+
+    private String getTypeDesc(TrackerUserModel tu) {
+        if(tu == null) {
+            return "";
+        }
+
+        switch (tu.getType()) {
+            case 1 :
+                return "追高";
+            case 2 :
+                return "稳健";
+            default:return "";
+        }
+
     }
 
     /**
@@ -146,9 +170,9 @@ public class TransactionTrackerRepo extends NeedLoginRepo implements AfterExtrac
      * @return
      */
     private boolean isLatest() {
-//        if (applyTime == null || Math.abs(this.applyTime.getTime() - System.currentTimeMillis()) > EXPIRED_TIME) {
-//            return false;
-//        }
+        if (applyTime == null || Math.abs(this.applyTime.getTime() - System.currentTimeMillis()) > EXPIRED_TIME) {
+            return false;
+        }
 
         TransactionTrackerQueryModel qm = TransactionTrackerQueryModel.builder()
                 .userId(this.userId)
