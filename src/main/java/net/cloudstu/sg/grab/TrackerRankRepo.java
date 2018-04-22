@@ -6,6 +6,7 @@ import net.cloudstu.sg.dao.TrackerUserDao;
 import net.cloudstu.sg.entity.CookieModel;
 import net.cloudstu.sg.entity.TrackerUserModel;
 import net.cloudstu.sg.util.SpringUtil;
+import net.cloudstu.sg.util.ThreadUtil;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.util.StringUtils;
 import us.codecraft.webmagic.Page;
@@ -18,6 +19,8 @@ import us.codecraft.webmagic.model.annotation.TargetUrl;
 
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * http://moni.178448.com/ShowMatchInfo-72.html
@@ -28,19 +31,29 @@ import java.util.concurrent.LinkedBlockingQueue;
 @Slf4j
 @TargetUrl("http://moni.178448.com/ShowMatchInfo-\\w+.html")
 @ExtractBy(value = "//table[@class='paimtab mt10']/tbody/tr", multi = true)
-public class TrackerRankRepo extends NeedLoginRepo implements AfterExtractor{
+public class TrackerRankRepo extends NeedLoginRepo implements AfterExtractor {
 
     private static BlockingQueue<TrackerUserModel> trackerUserQueue = new LinkedBlockingQueue<>();
 
+    private static AtomicInteger count = new AtomicInteger(0);
+
     @Override
     public void afterProcess(Page page) {
+        if (count.get() >= 50) {
+            count = new AtomicInteger(0);
+        }
+//        System.out.println(this.rank);
         TrackerUserModel trackerUser = new TrackerUserModel();
         trackerUser.setUserName(this.userName);
         trackerUser.setUserId(getUserId(this.trackFunctionName));
         trackerUser.setType(0);
+        trackerUser.setRank(count.addAndGet(1));
 
         try {
-            trackerUserQueue.put(trackerUser);
+            log.warn(String.format("%d-%s", trackerUser.getRank(), trackerUser.getUserName()));
+            if(trackerUser.getRank()<11) { //只持久化前10
+                trackerUserQueue.put(trackerUser);
+            }
         } catch (InterruptedException e) {
             log.error(e.getMessage(), e);
         }
@@ -69,7 +82,7 @@ public class TrackerRankRepo extends NeedLoginRepo implements AfterExtractor{
     }
 
     private long getUserId(String trackFunctionName) {
-        if(StringUtils.isEmpty(trackFunctionName)) {
+        if (StringUtils.isEmpty(trackFunctionName)) {
             return 0;
         }
 
@@ -97,6 +110,7 @@ public class TrackerRankRepo extends NeedLoginRepo implements AfterExtractor{
 
         OOSpider ooSpider = OOSpider.create(site,
                 new ConsolePageModelPipeline(), TrackerRankRepo.class);
+        ooSpider.thread(1);
         return ooSpider;
     }
 
@@ -106,23 +120,26 @@ public class TrackerRankRepo extends NeedLoginRepo implements AfterExtractor{
         return String.format("http://moni.178448.com/ShowMatchInfo-%d.html", month);
     }
 
-//    @ExtractBy(value = "//table[@class='paimtab mt10']/tbody/tr[4]/td[2]/a/text()")
     @ExtractBy(value = "//a/text()", notNull = true)
     private String userName;
-//    @ExtractBy(value = "//table[@class='paimtab mt10']/tbody/tr[4]/td[12]/a[@style='color: Red']/@onclick")
     @ExtractBy(value = "//a[@style='color: Red']/@onclick", notNull = true)
     private String trackFunctionName;
+
+//    @ExtractBy(value = "//td[position()=1]", notNull = true)
+//    private int rank;
 
     public static void main(String[] args) {
         new AnnotationConfigApplicationContext(RootConfig.class);
 
-        for(int i=69; i<73; i++) {
+        for (int i = 69; i < 73; i++) {
             grab(i);
         }
 
         TrackerUserDao trackerUserDao = SpringUtil.getBean(TrackerUserDao.class);
 
-        while(trackerUserQueue.size()>0) {
+//        ThreadUtil.sleep(10, TimeUnit.SECONDS);
+
+        while (trackerUserQueue.size() > 0) {
             TrackerUserModel trackerUser = trackerUserQueue.poll();
             trackerUserDao.insert(trackerUser);
         }

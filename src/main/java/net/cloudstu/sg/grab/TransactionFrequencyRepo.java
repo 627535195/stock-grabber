@@ -120,7 +120,7 @@ public class TransactionFrequencyRepo extends NeedLoginRepo implements AfterExtr
         TrackerUserDao trackerUserDao = SpringUtil.getBean(TrackerUserDao.class);
         List<TrackerUserModel> trackerUserModels =  trackerUserDao.selectAll();
 
-        List<Long> userIds = trackerUserModels.stream().filter(x -> x.getCnt()>2).map(TrackerUserModel::getUserId).collect(Collectors.toList());
+        List<Long> userIds = trackerUserModels.stream().filter(x -> x.getCnt()>1).map(TrackerUserModel::getUserId).collect(Collectors.toList());
         grab(72, userIds);
 
     }
