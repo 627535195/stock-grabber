@@ -133,13 +133,13 @@ public class TransactionTrackerRepo extends NeedLoginRepo implements AfterExtrac
         TrackerUserModel tu = trackerUserDao.selectByUserId(tt.getUserId());
 
 
-        return String.format("%s【%s】！价格【%s】申请时间【%s】状态【%s】买入人类型【%s】",
+        return String.format("%s【%s】！价格【%s】申请时间【%s】状态【%s】买入人【%s】",
                 tt.getAction(),
                 tt.getName(),
                 tt.getApplyPrice(),
                 new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date(tt.getApplyTime())),
                 tt.getState(),
-                getTypeDesc(tu));
+                String.format("%s（%s）"),tu.getUserName(),getTypeDesc(tu));
     }
 
     private String getTypeDesc(TrackerUserModel tu) {
