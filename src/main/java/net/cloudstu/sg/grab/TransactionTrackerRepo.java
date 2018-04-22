@@ -136,10 +136,9 @@ public class TransactionTrackerRepo extends NeedLoginRepo implements AfterExtrac
         return String.format("%s【%s】！价格【%s】申请时间【%s】状态【%s】买入人类型【%s】",
                 tt.getAction(),
                 tt.getName(),
-                tt.getApplyTime(),
-                new SimpleDateFormat("yyyy-MM-dd hh:mm:ss").format(new Date(tt.getApplyTime())),
+                tt.getApplyPrice(),
+                new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date(tt.getApplyTime())),
                 tt.getState(),
-                tu.getUserId(),
                 getTypeDesc(tu));
     }
 
