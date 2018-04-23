@@ -8,7 +8,7 @@ import lombok.Builder;
  */
 @Builder
 public class TransactionTrackerQueryModel {
-    private String userId;
+    private long userId;
     private String name;
     private String action;
     private long applyTime;

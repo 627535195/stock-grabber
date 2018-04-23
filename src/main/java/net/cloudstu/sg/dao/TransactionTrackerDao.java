@@ -4,6 +4,8 @@ import net.cloudstu.sg.entity.TransactionTrackerModel;
 import net.cloudstu.sg.entity.TransactionTrackerQueryModel;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 /**
  * 交易跟踪
  *
@@ -14,4 +16,5 @@ import org.springframework.stereotype.Repository;
 public interface TransactionTrackerDao extends BaseDao<TransactionTrackerModel,
         TransactionTrackerQueryModel>{
 
+    List<TransactionTrackerModel> selectInitTransactionTracker();
 }

@@ -6,7 +6,6 @@ import net.cloudstu.sg.dao.TrackerUserDao;
 import net.cloudstu.sg.entity.CookieModel;
 import net.cloudstu.sg.entity.TrackerUserModel;
 import net.cloudstu.sg.util.SpringUtil;
-import net.cloudstu.sg.util.ThreadUtil;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.util.StringUtils;
 import us.codecraft.webmagic.Page;
@@ -19,7 +18,6 @@ import us.codecraft.webmagic.model.annotation.TargetUrl;
 
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
-import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 
 /**

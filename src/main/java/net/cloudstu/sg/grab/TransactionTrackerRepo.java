@@ -26,7 +26,11 @@ import us.codecraft.webmagic.model.annotation.TargetUrl;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
+import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.LinkedBlockingDeque;
 
 /**
  * http://moni.178448.com/ShowMatchUser-72-387634.html
@@ -39,29 +43,35 @@ import java.util.List;
 @TargetUrl("http://moni.178448.com/ShowMatchUser-\\w+-\\w+.html")
 public class TransactionTrackerRepo extends NeedLoginRepo implements AfterExtractor {
 
+    /**
+     * 已经存在的交易
+     */
+    public static Set<TransactionTrackerModel> existedTransactionTrackers = new HashSet<>();
+    public static BlockingQueue<TransactionTrackerModel> synTransactionTrackerQueue = new LinkedBlockingDeque<>();
+
     @Override
     public void afterProcess(Page page) {
-        if (isLatest()) {
-            TransactionTrackerModel tt = new TransactionTrackerModel();
-            tt.setUserId(Long.parseLong(this.userId));
-            tt.setName(this.name);
-            tt.setAction(this.action);
-            tt.setApplyPrice(this.applyPrice);
-            tt.setPrice(this.price);
-            tt.setApplyTime(this.applyTime == null ? 0 : this.applyTime.getTime());
-            tt.setTime(this.time == null ? 0 : this.time.getTime());
-            tt.setState(this.state);
+        TransactionTrackerModel tt = new TransactionTrackerModel();
+        tt.setUserId(this.userId);
+        tt.setName(this.name);
+        tt.setAction(this.action);
+        tt.setApplyPrice(this.applyPrice);
+        tt.setPrice(this.price);
+        tt.setApplyTime(this.applyTime == null ? 0 : this.applyTime.getTime());
+        tt.setTime(this.time == null ? 0 : this.time.getTime());
+        tt.setState(this.state);
 
-            log.warn("发生交易！【{}】", tt.getUserId());
-
-            WxmpSender.messageSendToAdmin(getTransactionInfo(tt));
-
-            try {
-                SpringUtil.getBean(TransactionTrackerDao.class).create(tt);
-            } catch (Exception e) {
-                log.error(e.getMessage(), e);
-            }
+        if(!existedTransactionTrackers.add(tt)) { //没有新的交易
+            return;
         }
+
+
+        log.warn("发生交易！【{}】", tt.getUserId());
+
+//        WxmpSender.messageSendToAdmin(getTransactionInfo(tt));
+
+        //先写入队列，后面再入库
+        synTransactionTrackerQueue.add(tt);
     }
 
     /**
@@ -235,7 +245,7 @@ public class TransactionTrackerRepo extends NeedLoginRepo implements AfterExtrac
     private String state;
 
     @ExtractByUrl("http://moni.178448.com/ShowMatchUser-\\w+-(\\w+).html")
-    private String userId;
+    private long userId;
 
     private static final String DOMAIN = "moni.178448.com";
 

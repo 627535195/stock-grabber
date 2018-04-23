@@ -44,4 +44,13 @@
         </where>
     </select>
 
+    <select id="selectInitTransactionTracker" resultMap="transactionTrackerResultMap">
+        SELECT
+        id,
+        <include refid="transaction_tracker_fields"/>
+        FROM transaction_tracker
+        ORDER BY ctime DESC
+        LIMIT 20
+    </select>
+
 </mapper>
