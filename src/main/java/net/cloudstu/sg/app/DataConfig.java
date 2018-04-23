@@ -19,27 +19,27 @@ import javax.sql.DataSource;
 @Configuration
 @MapperScan(value = "net.cloudstu.sg.dao",annotationClass = Repository.class)
 public class DataConfig {
-    @Bean
-    public DataSource dataSource() {
-        DruidDataSource dataSource = new DruidDataSource();
-        dataSource.setDriverClassName("com.mysql.jdbc.Driver");
-        dataSource.setUsername("root");
-        dataSource.setPassword("root");
-        dataSource.setUrl("jdbc:mysql://localhost:3306/prediction?useUnicode=true&amp;characterEncoding=UTF-8");
-
-        return dataSource;
-    }
-
 //    @Bean
 //    public DataSource dataSource() {
 //        DruidDataSource dataSource = new DruidDataSource();
 //        dataSource.setDriverClassName("com.mysql.jdbc.Driver");
-//        dataSource.setUsername("pdf");
-//        dataSource.setPassword("pdfpassword");
-//        dataSource.setUrl("jdbc:mysql://172.16.3.251:3306/pdf?useUnicode=true&amp;characterEncoding=UTF-8");
+//        dataSource.setUsername("root");
+//        dataSource.setPassword("root");
+//        dataSource.setUrl("jdbc:mysql://localhost:3306/prediction?useUnicode=true&amp;characterEncoding=UTF-8");
 //
 //        return dataSource;
 //    }
+
+    @Bean
+    public DataSource dataSource() {
+        DruidDataSource dataSource = new DruidDataSource();
+        dataSource.setDriverClassName("com.mysql.jdbc.Driver");
+        dataSource.setUsername("pdf");
+        dataSource.setPassword("pdfpassword");
+        dataSource.setUrl("jdbc:mysql://172.16.3.251:3306/pdf?useUnicode=true&amp;characterEncoding=UTF-8");
+
+        return dataSource;
+    }
 
     @Bean
     public DataSourceTransactionManager transactionManager() {
