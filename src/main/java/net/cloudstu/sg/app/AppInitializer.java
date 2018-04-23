@@ -24,7 +24,7 @@ public class AppInitializer implements WebApplicationInitializer {
         initSpringWebApplicationContext(container);
 
         //增加抓取listener
-//        container.addListener(new TransactionTrackerListener());
+        container.addListener(new TransactionTrackerListener());
         //增加持仓监控
         container.addListener(new StockHoldListener());
 
