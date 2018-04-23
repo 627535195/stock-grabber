@@ -61,7 +61,7 @@ public class TransactionTrackerRepo extends NeedLoginRepo implements AfterExtrac
         tt.setTime(this.time == null ? 0 : this.time.getTime());
         tt.setState(this.state);
 
-        if(!existedTransactionTrackers.add(tt)) { //没有新的交易
+        if (!existedTransactionTrackers.add(tt)) { //没有新的交易
             return;
         }
 
@@ -149,20 +149,21 @@ public class TransactionTrackerRepo extends NeedLoginRepo implements AfterExtrac
                 tt.getApplyPrice(),
                 new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date(tt.getApplyTime())),
                 tt.getState(),
-                String.format("%s（%s）"),tu.getUserName(),getTypeDesc(tu));
+                String.format("%s（%s）", tu.getUserName(), getTypeDesc(tu)));
     }
 
     private String getTypeDesc(TrackerUserModel tu) {
-        if(tu == null) {
+        if (tu == null) {
             return "";
         }
 
         switch (tu.getType()) {
-            case 1 :
+            case 1:
                 return "追高";
-            case 2 :
+            case 2:
                 return "稳健";
-            default:return "";
+            default:
+                return "";
         }
 
     }
