@@ -68,7 +68,7 @@ public class TransactionTrackerRepo extends NeedLoginRepo implements AfterExtrac
 
         log.warn("发生交易！【{}】", tt.getUserId());
 
-//        WxmpSender.messageSendToAdmin(getTransactionInfo(tt));
+        WxmpSender.messageSendToAdmin(getTransactionInfo(tt));
 
         //先写入队列，后面再入库
         synTransactionTrackerQueue.add(tt);

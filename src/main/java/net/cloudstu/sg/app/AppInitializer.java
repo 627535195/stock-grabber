@@ -1,5 +1,6 @@
 package net.cloudstu.sg.app;
 
+import net.cloudstu.sg.web.listener.StockHoldListener;
 import net.cloudstu.sg.web.listener.TransactionTrackerListener;
 import org.springframework.web.WebApplicationInitializer;
 import org.springframework.web.context.ContextLoaderListener;
@@ -23,7 +24,9 @@ public class AppInitializer implements WebApplicationInitializer {
         initSpringWebApplicationContext(container);
 
         //增加抓取listener
-        container.addListener(new TransactionTrackerListener());
+//        container.addListener(new TransactionTrackerListener());
+        //增加持仓监控
+        container.addListener(new StockHoldListener());
 
     }
 

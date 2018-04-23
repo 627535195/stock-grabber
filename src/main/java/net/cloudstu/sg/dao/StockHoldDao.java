@@ -1,6 +1,7 @@
 package net.cloudstu.sg.dao;
 
 import net.cloudstu.sg.entity.StockHoldModel;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
@@ -10,6 +11,7 @@ import java.util.List;
  * @author zhiming.li
  * @date 2018/4/19
  */
+@Repository
 public interface StockHoldDao{
 
     /**

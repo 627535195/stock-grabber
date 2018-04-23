@@ -2,6 +2,8 @@ package net.cloudstu.sg.entity;
 
 import lombok.Data;
 
+import java.util.Date;
+
 /**
  * 持仓
  *
@@ -15,4 +17,5 @@ public class StockHoldModel {
     private String name;
     private double nowPrice;
     private double expectPrice;
+    private Date updateTime;
 }
