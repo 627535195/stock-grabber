@@ -16,6 +16,7 @@ import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
 import java.util.List;
 import java.util.TimerTask;
+import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
 /**
@@ -54,6 +55,8 @@ public class TransactionTrackerListener implements ServletContextListener {
         // 起一个线程查看交易记录待入库队列的大小
         ((Runnable) () -> {
             while (true) {
+                ThreadUtil.sleep(30, TimeUnit.MINUTES);
+
                 log.warn("当前队列大小：【{}】", TransactionTrackerRepo.synTransactionTrackerQueue.size());
                 log.warn("当前交易记录排重集合大小：【{}】", TransactionTrackerRepo.existedTransactionTrackers.size());
             }
