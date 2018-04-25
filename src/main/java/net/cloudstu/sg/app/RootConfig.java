@@ -14,7 +14,8 @@ import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 @Configuration
 @ComponentScan(value = "net.cloudstu.sg",
         excludeFilters={@ComponentScan.Filter(type= FilterType.ANNOTATION,value=EnableWebMvc.class)})
-@Import({DataConfig.class/*,JspViewsConfig.class,MailConfig.class*/})
+@Import({DataConfig.class, RestTemplateConfig.class/*,JspViewsConfig.class,MailConfig.class*/})
 //@Import({DataConfig.class})
 public class RootConfig {
+
 }
