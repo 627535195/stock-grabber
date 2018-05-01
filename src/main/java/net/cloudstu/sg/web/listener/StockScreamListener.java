@@ -1,13 +1,11 @@
 package net.cloudstu.sg.web.listener;
 
 import net.cloudstu.sg.grab.ScreamStockRepo;
-import net.cloudstu.sg.grab.StockHoldRepo;
 import net.cloudstu.sg.util.SimpleTimer;
 
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Set;
 import java.util.TimerTask;
 
 /**
@@ -24,7 +22,7 @@ public class StockScreamListener implements ServletContextListener {
             public void run() {
                 ScreamStockRepo.testScream(getCodes());
             }
-        }, 2000L, 1000L);
+        }, 2000L, 10000L);
 
     }
 
@@ -33,10 +31,7 @@ public class StockScreamListener implements ServletContextListener {
     }
 
 
-    private List<String> getCodes() {
-        List<String> codes = new ArrayList<>();
-
-
-        return codes;
+    private Set<String> getCodes() {
+        return ScreamStockRepo.codes;
     }
 }

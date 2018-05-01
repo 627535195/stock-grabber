@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="net.cloudstu.sg.dao.StockModelDao">
+
+    <select id="selectMonitored" resultType="stockModel">
+        SELECT * FROM stock
+        where selected = 1;
+    </select>
+
+    <select id="selectLikeName" resultType="stockModel">
+        SELECT * FROM stock
+        WHERE name like '%${name}%'
+    </select>
+
+    <update id="update">
+        update stock
+        set selected = 1
+        where code = #{code}
+    </update>
+</mapper>

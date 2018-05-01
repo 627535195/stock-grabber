@@ -6,7 +6,9 @@ import net.cloudstu.sg.util.sinastock.StockRealTimeInfoTemplate;
 import net.cloudstu.sg.util.sinastock.data.StockData;
 import org.springframework.util.CollectionUtils;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
@@ -18,6 +20,8 @@ import java.util.concurrent.ConcurrentHashMap;
 @Slf4j
 public class ScreamStockRepo {
 
+    public static Set<String> codes = new HashSet<>();
+
     public static ConcurrentHashMap<String, Double> priceMap = new ConcurrentHashMap<>();
 
     /**
@@ -25,7 +29,7 @@ public class ScreamStockRepo {
      *
      * @param codes
      */
-    public static void testScream(List<String> codes) {
+    public static void testScream(Set<String> codes) {
         if (!CollectionUtils.isEmpty(codes)) {
             return;
         }
@@ -35,7 +39,7 @@ public class ScreamStockRepo {
                 StockData data = response.getData();
                 double range = getRange(code, data.getCurrentPrice());
 
-                if (range > 2) {
+                if (range > 1.5) {
                     ShiPanEUtil.buy(code, getAmount(data.getCurrentPrice()));
                     log.warn("尖叫交易【{}】", code);
                 }
