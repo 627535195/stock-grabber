@@ -2,9 +2,8 @@ package net.cloudstu.sg.grab;
 
 import lombok.extern.slf4j.Slf4j;
 import net.cloudstu.sg.app.RootConfig;
-import net.cloudstu.sg.dao.StockModelDao;
+import net.cloudstu.sg.dao.StockDao;
 import net.cloudstu.sg.entity.StockModel;
-import net.cloudstu.sg.entity.TrackerUserModel;
 import net.cloudstu.sg.util.SpringUtil;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.util.StringUtils;
@@ -28,9 +27,9 @@ public class MonitoredStockLoader {
         //清空
         ScreamStockRepo.codes.clear();
 
-        StockModelDao stockModelDao = SpringUtil.getBean(StockModelDao.class);
+        StockDao stockDao = SpringUtil.getBean(StockDao.class);
 
-        List<StockModel> stocks = stockModelDao.selectMonitored();
+        List<StockModel> stocks = stockDao.selectMonitored();
 
         if(StringUtils.isEmpty(stocks)) {
            return;
@@ -42,7 +41,7 @@ public class MonitoredStockLoader {
     public static void append() {
         ZtRepo.stockWithForecasterMap.clear();
 
-        StockModelDao stockModelDao = SpringUtil.getBean(StockModelDao.class);
+        StockDao stockDao = SpringUtil.getBean(StockDao.class);
 
         ZtRepo.loadForecasters(forecasters);
 
@@ -50,10 +49,10 @@ public class MonitoredStockLoader {
 
         for (String forecasterName : ZtRepo.stockWithForecasterMap.keySet()) {
             for (String stockName : ZtRepo.stockWithForecasterMap.get(forecasterName)) {
-                StockModel stockModel = stockModelDao.selectLikeName(stockName);
+                StockModel stockModel = stockDao.selectLikeName(stockName);
                 if (stockModel != null) {
                     if(ScreamStockRepo.codes.add(stockModel.getCode())) {
-                        stockModelDao.update(stockModel.getCode());
+                        stockDao.update(stockModel.getCode());
                         log.warn("新增预测【{}】", stockModel.getCode());
                     }
                 }

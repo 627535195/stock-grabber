@@ -13,7 +13,7 @@ import java.util.List;
  * @date 2018/5/1
  */
 @Repository
-public interface StockModelDao {
+public interface StockDao {
 
     StockModel selectLikeName(@Param(value = "name") String name);
 

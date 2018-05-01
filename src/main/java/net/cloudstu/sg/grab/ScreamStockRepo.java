@@ -1,6 +1,7 @@
 package net.cloudstu.sg.grab;
 
 import lombok.extern.slf4j.Slf4j;
+import net.cloudstu.sg.entity.TransactionTrackerModel;
 import net.cloudstu.sg.util.ShiPanEUtil;
 import net.cloudstu.sg.util.sinastock.StockRealTimeInfoTemplate;
 import net.cloudstu.sg.util.sinastock.data.StockData;
@@ -22,14 +23,17 @@ public class ScreamStockRepo {
 
     public static Set<String> codes = new HashSet<>();
 
+    public static Set<String> existedTransactionCodes = new HashSet<>();
+
     public static ConcurrentHashMap<String, Double> priceMap = new ConcurrentHashMap<>();
 
     /**
      * 看是否尖叫
      *
+     * @param referenceRange 参考量
      * @param codes
      */
-    public static void testScream(Set<String> codes) {
+    public static void testScream(Set<String> codes, double referenceRange) {
         if (!CollectionUtils.isEmpty(codes)) {
             return;
         }
@@ -39,7 +43,7 @@ public class ScreamStockRepo {
                 StockData data = response.getData();
                 double range = getRange(code, data.getCurrentPrice());
 
-                if (range > 1.5) {
+                if (range > referenceRange && existedTransactionCodes.add(code)) {
                     ShiPanEUtil.buy(code, getAmount(data.getCurrentPrice()));
                     log.warn("尖叫交易【{}】", code);
                 }
@@ -71,5 +75,16 @@ public class ScreamStockRepo {
      */
     private static int getAmount(double nowPrice) {
         return (int) Math.round(200/nowPrice) * 100;
+    }
+
+    public static void main(String[] args) {
+        Set<String> codes = new HashSet<>();
+        codes.add("300380");
+        codes.add("600604");
+        codes.stream().forEach(code -> {
+            StockRealTimeInfoTemplate.get(code, response -> {
+                System.out.println(response.getData().getCurrentPrice());
+            });
+        });
     }
 }
