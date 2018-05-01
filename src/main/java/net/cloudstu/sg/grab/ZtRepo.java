@@ -1,7 +1,12 @@
 package net.cloudstu.sg.grab;
 
 import lombok.extern.slf4j.Slf4j;
+import net.cloudstu.sg.app.RootConfig;
+import net.cloudstu.sg.dao.StockDao;
+import net.cloudstu.sg.entity.StockModel;
+import net.cloudstu.sg.util.SpringUtil;
 import net.cloudstu.sg.util.formatter.StringTrimFormatter;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.util.StringUtils;
 import us.codecraft.webmagic.Page;
 import us.codecraft.webmagic.Site;
@@ -128,20 +133,38 @@ public class ZtRepo implements AfterExtractor {
     private String containStockName;
 
     public static void main(String[] args) {
+        new AnnotationConfigApplicationContext(RootConfig.class);
+
+        StockDao stockDao = SpringUtil.getBean(StockDao.class);
+
         long beginTime = System.currentTimeMillis();
         List<String> forecasters = new ArrayList<>();
+        forecasters.add("今古传奇吗");
+        forecasters.add("maosc01");
+        forecasters.add("天赋闲荡");
         forecasters.add("股道之友");
-        forecasters.add("千金散尽007");
-        forecasters.add("RZ522");
+        forecasters.add("一字连板");
+        forecasters.add("不是我迷恋花");
+        forecasters.add("xcr033@sina.com");
+        forecasters.add("品桦Ph");
 
         loadForecasters(forecasters);
 
-        grab(50, 120);
+        grab(1, 50);
         System.out.println("抓取完成！耗时【" + (System.currentTimeMillis() - beginTime) + "】");
 
         for (String forecasterName : stockWithForecasterMap.keySet()) {
             System.out.println(forecasterName);
-            stockWithForecasterMap.get(forecasterName).forEach(System.out::println);
+            List<String> stockNames = stockWithForecasterMap.get(forecasterName);
+            for(String stockName : stockNames) {
+                System.out.println(stockName);
+
+                StockModel stock = stockDao.selectLikeName(stockName);
+                if(stock != null) {
+                    stockDao.update(stock.getCode());
+                }
+
+            }
             System.out.println();
         }
     }
