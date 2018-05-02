@@ -23,6 +23,18 @@ import java.util.stream.Collectors;
 public class MonitoredStockLoader {
     public static final List<String> forecasters = new ArrayList<>();
 
+    //TODO 从数据库中加载
+    static {
+        forecasters.add("今古传奇吗");
+        forecasters.add("maosc01");
+        forecasters.add("天赋闲荡");
+        forecasters.add("股道之友");
+        forecasters.add("一字连板");
+        forecasters.add("不是我迷恋花");
+        forecasters.add("xcr033@sina.com");
+        forecasters.add("品桦Ph");
+    }
+
     public static void load() {
         //清空
         ScreamStockRepo.codes.clear();

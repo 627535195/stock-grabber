@@ -138,6 +138,8 @@ public class ZtRepo implements AfterExtractor {
         StockDao stockDao = SpringUtil.getBean(StockDao.class);
 
         long beginTime = System.currentTimeMillis();
+
+        //TODO 这块不统一
         List<String> forecasters = new ArrayList<>();
         forecasters.add("今古传奇吗");
         forecasters.add("maosc01");
