@@ -3,6 +3,7 @@ package net.cloudstu.sg.web.listener;
 import net.cloudstu.sg.grab.MonitoredStockLoader;
 import net.cloudstu.sg.grab.ScreamStockRepo;
 import net.cloudstu.sg.util.SimpleTimer;
+import net.cloudstu.sg.util.TransactionTimeUtil;
 
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
@@ -39,21 +40,27 @@ public class StockScreamListener implements ServletContextListener {
         SimpleTimer.scheduleAtFixedRate(new TimerTask() {
             @Override
             public void run() {
-                ScreamStockRepo.testScream(getCodes(), 1.2, 5);
+                if(TransactionTimeUtil.isTransactionTime()) {
+                    ScreamStockRepo.testScream(getCodes(), 1.2, 5);
+                }
             }
         }, 2000L, 5000L);
 
         SimpleTimer.scheduleAtFixedRate(new TimerTask() {
             @Override
             public void run() {
-                ScreamStockRepo.testScream(getCodes(), 1.5, 30);
+                if(TransactionTimeUtil.isTransactionTime()) {
+                    ScreamStockRepo.testScream(getCodes(), 1.5, 30);
+                }
             }
         }, 2000L, 30000L);
 
         SimpleTimer.scheduleAtFixedRate(new TimerTask() {
             @Override
             public void run() {
-                ScreamStockRepo.testScream(getCodes(), 2, 60);
+                if(TransactionTimeUtil.isTransactionTime()) {
+                    ScreamStockRepo.testScream(getCodes(), 2, 60);
+                }
             }
         }, 2000L, 60000L);
     }
