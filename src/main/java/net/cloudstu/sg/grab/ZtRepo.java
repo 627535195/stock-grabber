@@ -152,7 +152,7 @@ public class ZtRepo implements AfterExtractor {
 
         loadForecasters(forecasters);
 
-        grab(1, 50);
+        grab(1, 40);
         System.out.println("抓取完成！耗时【" + (System.currentTimeMillis() - beginTime) + "】");
 
         for (String forecasterName : stockWithForecasterMap.keySet()) {
@@ -162,6 +162,7 @@ public class ZtRepo implements AfterExtractor {
                 System.out.println(stockName);
 
                 StockModel stock = stockDao.selectLikeName(stockName);
+                System.out.println(stock);
                 if(stock != null) {
                     stockDao.update(stock.getCode());
                 }
