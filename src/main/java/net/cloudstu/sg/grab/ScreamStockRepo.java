@@ -1,9 +1,13 @@
 package net.cloudstu.sg.grab;
 
 import lombok.extern.slf4j.Slf4j;
+import net.cloudstu.sg.dao.SwingDao;
+import net.cloudstu.sg.entity.SwingModel;
 import net.cloudstu.sg.entity.TransactionTrackerModel;
 import net.cloudstu.sg.util.ShiPanEUtil;
+import net.cloudstu.sg.util.SpringUtil;
 import net.cloudstu.sg.util.sinastock.StockRealTimeInfoTemplate;
+import net.cloudstu.sg.util.sinastock.data.SinaStockResponse;
 import net.cloudstu.sg.util.sinastock.data.StockData;
 import org.springframework.util.CollectionUtils;
 
@@ -30,22 +34,31 @@ public class ScreamStockRepo {
     /**
      * 看是否尖叫
      *
-     * @param referenceRange 参考量
      * @param codes
+     * @param referenceRange 参考量
+     * @param seconds 频率
      */
-    public static void testScream(Set<String> codes, double referenceRange) {
-        if (!CollectionUtils.isEmpty(codes)) {
+    public static void testScream(Set<String> codes, double referenceRange, int seconds) {
+        if (CollectionUtils.isEmpty(codes)) {
             return;
         }
 
         codes.stream().forEach(code -> {
             StockRealTimeInfoTemplate.get(code, response -> {
                 StockData data = response.getData();
-                double range = getRange(code, data.getCurrentPrice());
+                double range = getRange(code, data.getSwing());
 
                 if (range > referenceRange && existedTransactionCodes.add(code)) {
                     ShiPanEUtil.buy(code, getAmount(data.getCurrentPrice()));
                     log.warn("尖叫交易【{}】", code);
+                }
+
+                if(seconds>10) {
+                    SwingModel swing = new SwingModel();
+                    swing.setCode(code);
+                    swing.setSeconds(seconds);
+                    swing.setSwing(range);
+                    SpringUtil.getBean(SwingDao.class).insert(swing);
                 }
             });
         });
@@ -55,17 +68,18 @@ public class ScreamStockRepo {
      * 涨幅
      *
      * @param code
-     * @param nowPrice
+     * @param nowSwing
      * @return
      */
-    private static double getRange(String code, double nowPrice) {
+    private static double getRange(String code, double nowSwing) {
         if (!priceMap.containsKey(code)) {
+            priceMap.put(code, nowSwing);
             return 0.0;
         }
 
-        double oldPrice = priceMap.get(code);
-        priceMap.put(code, nowPrice);
-        return nowPrice - oldPrice;
+        double oldSwing = priceMap.get(code);
+        priceMap.put(code, nowSwing);
+        return nowSwing - oldSwing;
     }
 
     /**

@@ -39,21 +39,21 @@ public class StockScreamListener implements ServletContextListener {
         SimpleTimer.scheduleAtFixedRate(new TimerTask() {
             @Override
             public void run() {
-                ScreamStockRepo.testScream(getCodes(), 1.2);
+                ScreamStockRepo.testScream(getCodes(), 1.2, 5);
             }
         }, 2000L, 5000L);
 
         SimpleTimer.scheduleAtFixedRate(new TimerTask() {
             @Override
             public void run() {
-                ScreamStockRepo.testScream(getCodes(), 1.5);
+                ScreamStockRepo.testScream(getCodes(), 1.5, 30);
             }
         }, 2000L, 30000L);
 
         SimpleTimer.scheduleAtFixedRate(new TimerTask() {
             @Override
             public void run() {
-                ScreamStockRepo.testScream(getCodes(), 2);
+                ScreamStockRepo.testScream(getCodes(), 2, 60);
             }
         }, 2000L, 60000L);
     }

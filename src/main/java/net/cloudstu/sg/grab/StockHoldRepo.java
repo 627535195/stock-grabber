@@ -35,22 +35,19 @@ public class StockHoldRepo {
             if(StringUtils.isEmpty(stockHold.getCode())) {
                continue;
             }
-            StockRealTimeInfoTemplate.get(stockHold.getCode(), new StockRealTimeInfoTemplate.StockRealTimeInfoCallback() {
-                @Override
-                public void call(SinaStockResponse response) {
-                    StockData data = response.getData();
+            StockRealTimeInfoTemplate.get(stockHold.getCode(), response -> {
+                StockData data = response.getData();
 
-                    //达到预期提示
-                    if(data.getCurrentPrice()> stockHold.getExpectPrice() && holdNoticedSet.add(stockHold.getCode())) {
-                        WxmpSender.messageSendToAdmin(getReachExpectedInfo(stockHold));
-                    }
-
-                    //大幅拉升提示
-                    if(data.getSwing()>5 && holdNoticedSet.add(stockHold.getCode())) {
-                        WxmpSender.messageSendToAdmin(getLargeUp(stockHold));
-                    }
-
+                //达到预期提示
+                if(data.getCurrentPrice()> stockHold.getExpectPrice() && holdNoticedSet.add(stockHold.getCode())) {
+                    WxmpSender.messageSendToAdmin(getReachExpectedInfo(stockHold));
                 }
+
+                //大幅拉升提示
+                if(data.getSwing()>5 && holdNoticedSet.add(stockHold.getCode())) {
+                    WxmpSender.messageSendToAdmin(getLargeUp(stockHold));
+                }
+
             });
         }
 

@@ -53,12 +53,9 @@
         <appender-ref ref ="stdout"/>
     </appender>
 
-    <!--<logger name="org.cache.dao" level="DEBUG">-->
-        <!--<appender-ref ref="console"/>-->
-    <!--</logger>-->
 
     <root level="${log.level}">
-<!--        <appender-ref ref="console"/>-->
+        <appender-ref ref="console"/>
         <appender-ref ref="async"/>
         <appender-ref ref="stderr"/>
     </root>
