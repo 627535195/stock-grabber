@@ -55,7 +55,7 @@
 
 
     <root level="${log.level}">
-        <appender-ref ref="console"/>
+<!--        <appender-ref ref="console"/>-->
         <appender-ref ref="async"/>
         <appender-ref ref="stderr"/>
     </root>
