@@ -1,5 +1,6 @@
 package net.cloudstu.sg.web.listener;
 
+import lombok.extern.slf4j.Slf4j;
 import net.cloudstu.sg.grab.MonitoredStockLoader;
 import net.cloudstu.sg.grab.ScreamStockRepo;
 import net.cloudstu.sg.util.SimpleTimer;
@@ -17,6 +18,7 @@ import java.util.TimerTask;
  * @author zhiming.li
  * @date 2018/5/1
  */
+@Slf4j
 public class StockLoadListener implements ServletContextListener {
     @Override
     public void contextInitialized(ServletContextEvent servletContextEvent) {
@@ -32,6 +34,7 @@ public class StockLoadListener implements ServletContextListener {
             @Override
             public void run() {
                 MonitoredStockLoader.load();
+                log.warn("初始化涨停预测完成！【{}】", ScreamStockRepo.codes);
             }
         }, time);
 
@@ -41,6 +44,7 @@ public class StockLoadListener implements ServletContextListener {
             public void run() {
                 if (TransactionTimeUtil.isTransactionTime()) {
                     MonitoredStockLoader.append();
+                    log.warn("新增涨停预测完成！【{}】", ScreamStockRepo.codes);
                 }
             }
         },2000, 5*60*1000);
