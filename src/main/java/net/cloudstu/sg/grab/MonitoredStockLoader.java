@@ -57,7 +57,7 @@ public class MonitoredStockLoader {
 
         ZtRepo.loadForecasters(forecasters);
 
-        ZtRepo.grab(1, 10);
+        ZtRepo.grab(1, 3);
 
         for (String forecasterName : ZtRepo.stockWithForecasterMap.keySet()) {
             for (String stockName : ZtRepo.stockWithForecasterMap.get(forecasterName)) {
