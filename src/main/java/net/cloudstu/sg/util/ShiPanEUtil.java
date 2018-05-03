@@ -102,7 +102,6 @@ public abstract class ShiPanEUtil {
 
         HttpEntity<String> request = new HttpEntity<>(JSON.toJSONString(map), getHeaders());
         String result = restTemplate.postForObject(url, request, String.class);
-        System.out.println(request);
 
     }
 

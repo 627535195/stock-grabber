@@ -7,9 +7,9 @@
         where selected = 1;
     </select>
 
-    <select id="selectLikeName" resultType="stockModel">
+    <select id="selectLikeName" resultType="stockModel" parameterType="String">
         SELECT * FROM stock
-        WHERE name like '%${name}%'
+        WHERE name like CONCAT('%', #{name}, '%')
     </select>
 
     <update id="update">
