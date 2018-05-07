@@ -34,11 +34,11 @@ public class StockLoadListener implements ServletContextListener {
         SimpleTimer.scheduleAtTime(new TimerTask() {
             @Override
             public void run() {
-                //测试交易接口
+//                测试交易接口
                 ShiPanEUtil.buy("000001", 100);
 
                 MonitoredStockLoader.load();
-                log.warn("初始化涨停预测完成！【{}】", ScreamStockRepo.codes);
+                log.warn("初始化涨停预测完成！【{}】", ScreamStockRepo.codes.size());
             }
         }, time);
 

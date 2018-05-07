@@ -37,7 +37,12 @@ public abstract class ShiPanEUtil {
         map.put("amount", amount);
 
         HttpEntity<String> request = new HttpEntity<>(JSON.toJSONString(map), getHeaders());
-        String result = restTemplate.postForObject(url, request, String.class);
+
+        try {
+            restTemplate.postForObject(url, request, String.class);
+        }catch (Exception e) {
+            log.error("交易异常！", e);
+        }
     }
 
     /**
@@ -58,7 +63,12 @@ public abstract class ShiPanEUtil {
         map.put("amount", amount);
 
         HttpEntity<String> request = new HttpEntity<>(JSON.toJSONString(map), getHeaders());
-        String result = restTemplate.postForObject(url, request, String.class);
+
+        try {
+            restTemplate.postForObject(url, request, String.class);
+        }catch (Exception e) {
+            log.error("交易异常！", e);
+        }
     }
 
     /**
@@ -80,7 +90,11 @@ public abstract class ShiPanEUtil {
         map.put("amount", amount);
 
         HttpEntity<String> request = new HttpEntity<>(JSON.toJSONString(map), getHeaders());
-        String result = restTemplate.postForObject(url, request, String.class);
+        try {
+            restTemplate.postForObject(url, request, String.class);
+        }catch (Exception e) {
+            log.error("交易异常！", e);
+        }
     }
 
     /**
@@ -101,7 +115,11 @@ public abstract class ShiPanEUtil {
         map.put("amount", amount);
 
         HttpEntity<String> request = new HttpEntity<>(JSON.toJSONString(map), getHeaders());
-        String result = restTemplate.postForObject(url, request, String.class);
+        try {
+            restTemplate.postForObject(url, request, String.class);
+        }catch (Exception e) {
+            log.error("交易异常！", e);
+        }
 
     }
 
@@ -112,7 +130,11 @@ public abstract class ShiPanEUtil {
         RestTemplate restTemplate = SpringUtil.getBean(RestTemplate.class);
         String url = String.format(API_URL, "orders");
 
-        restTemplate.delete(url);
+        try {
+            restTemplate.delete(url);
+        }catch (Exception e) {
+            log.error("交易异常！", e);
+        }
     }
 
     private static HttpHeaders getHeaders() {

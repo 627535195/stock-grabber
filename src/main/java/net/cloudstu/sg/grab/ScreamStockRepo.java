@@ -21,7 +21,7 @@ import java.util.concurrent.ConcurrentHashMap;
 @Slf4j
 public class ScreamStockRepo {
 
-    public final static Logger swingLog = LoggerFactory.getLogger("async_swing");
+    public final static Logger swingLog = LoggerFactory.getLogger("swingLog");
 
     public static Set<String> codes = new HashSet<>();
 
