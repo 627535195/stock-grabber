@@ -1,18 +1,14 @@
 package net.cloudstu.sg.grab;
 
 import lombok.extern.slf4j.Slf4j;
-import net.cloudstu.sg.dao.SwingDao;
-import net.cloudstu.sg.entity.SwingModel;
-import net.cloudstu.sg.entity.TransactionTrackerModel;
 import net.cloudstu.sg.util.ShiPanEUtil;
-import net.cloudstu.sg.util.SpringUtil;
 import net.cloudstu.sg.util.sinastock.StockRealTimeInfoTemplate;
-import net.cloudstu.sg.util.sinastock.data.SinaStockResponse;
 import net.cloudstu.sg.util.sinastock.data.StockData;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.util.CollectionUtils;
 
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -24,6 +20,8 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 @Slf4j
 public class ScreamStockRepo {
+
+    public final static Logger swingLog = LoggerFactory.getLogger("async_swing");
 
     public static Set<String> codes = new HashSet<>();
 
@@ -53,13 +51,16 @@ public class ScreamStockRepo {
                     log.warn("尖叫交易【{}】", code);
                 }
 
-                if(seconds>10) {
-                    SwingModel swing = new SwingModel();
-                    swing.setCode(code);
-                    swing.setSeconds(seconds);
-                    swing.setSwing(range);
-                    SpringUtil.getBean(SwingDao.class).insert(swing);
-                }
+                swingLog.info("{},{},{}", code, range, seconds);
+
+
+//                if(seconds>10) {
+//                    SwingModel swing = new SwingModel();
+//                    swing.setCode(code);
+//                    swing.setSeconds(seconds);
+//                    swing.setSwing(range);
+//                    SpringUtil.getBean(SwingDao.class).insert(swing);
+//                }
             });
         });
     }
