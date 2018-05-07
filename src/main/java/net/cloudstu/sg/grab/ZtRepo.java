@@ -137,40 +137,38 @@ public class ZtRepo implements AfterExtractor {
 
         StockDao stockDao = SpringUtil.getBean(StockDao.class);
 
-        stockDao.selectLikeName("华锋股份");
+        long beginTime = System.currentTimeMillis();
 
-//        long beginTime = System.currentTimeMillis();
-//
-//        //TODO 这块不统一
-//        List<String> forecasters = new ArrayList<>();
-//        forecasters.add("今古传奇吗");
-//        forecasters.add("maosc01");
-//        forecasters.add("天赋闲荡");
-//        forecasters.add("股道之友");
-//        forecasters.add("一字连板");
-//        forecasters.add("不是我迷恋花");
-//        forecasters.add("xcr033@sina.com");
-//        forecasters.add("品桦Ph");
-//
-//        loadForecasters(forecasters);
-//
-//        grab(1, 55);
-//        System.out.println("抓取完成！耗时【" + (System.currentTimeMillis() - beginTime) + "】");
-//
-//        for (String forecasterName : stockWithForecasterMap.keySet()) {
-//            System.out.println(forecasterName);
-//            List<String> stockNames = stockWithForecasterMap.get(forecasterName);
-//            for(String stockName : stockNames) {
-//                System.out.println(stockName);
-//
-//                StockModel stock = stockDao.selectLikeName(stockName);
-//                System.out.println(stock);
-//                if(stock != null) {
-//                    stockDao.update(stock.getCode());
-//                }
-//
-//            }
-//            System.out.println();
-//        }
+        //TODO 这块不统一
+        List<String> forecasters = new ArrayList<>();
+        forecasters.add("今古传奇吗");
+        forecasters.add("maosc01");
+        forecasters.add("天赋闲荡");
+        forecasters.add("股道之友");
+        forecasters.add("一字连板");
+        forecasters.add("不是我迷恋花");
+        forecasters.add("xcr033@sina.com");
+        forecasters.add("品桦Ph");
+
+        loadForecasters(forecasters);
+
+        grab(1, 110);
+        System.out.println("抓取完成！耗时【" + (System.currentTimeMillis() - beginTime) + "】");
+
+        for (String forecasterName : stockWithForecasterMap.keySet()) {
+            System.out.println(forecasterName);
+            List<String> stockNames = stockWithForecasterMap.get(forecasterName);
+            for(String stockName : stockNames) {
+                System.out.println(stockName);
+
+                StockModel stock = stockDao.selectLikeName(stockName);
+                System.out.println(stock);
+                if(stock != null) {
+                    stockDao.update(stock.getCode());
+                }
+
+            }
+            System.out.println();
+        }
     }
 }

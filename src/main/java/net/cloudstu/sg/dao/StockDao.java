@@ -16,6 +16,8 @@ import java.util.List;
 @Repository
 public interface StockDao {
 
+    StockModel selectByName(@Param(value = "name") String name);
+
     StockModel selectLikeName(@Param(value = "name") String name);
 
     int update(@Param(value = "code") String code);

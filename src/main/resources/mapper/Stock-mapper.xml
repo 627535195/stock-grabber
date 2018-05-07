@@ -12,6 +12,11 @@
         WHERE name like CONCAT('%', #{name}, '%')
     </select>
 
+    <select id="selectByName" resultType="stockModel">
+        SELECT * FROM stock
+        WHERE name = #{name}
+    </select>
+
     <update id="update">
         update stock
         set selected = 1
