@@ -17,6 +17,11 @@
         WHERE name = #{name}
     </select>
 
+    <update id="resetSelectedStocks">
+        UPDATE stock s
+        SET s.selected = 0
+    </update>
+
     <update id="update">
         update stock
         set selected = 1

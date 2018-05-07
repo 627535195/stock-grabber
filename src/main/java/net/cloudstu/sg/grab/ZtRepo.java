@@ -132,10 +132,14 @@ public class ZtRepo implements AfterExtractor {
     @Formatter(formatter = StringTrimFormatter.class)
     private String containStockName;
 
-    public static void main(String[] args) {
+
+    public static void initSelectedStocks() {
         new AnnotationConfigApplicationContext(RootConfig.class);
 
         StockDao stockDao = SpringUtil.getBean(StockDao.class);
+
+        log.warn("清理昨天预测");
+        stockDao.resetSelectedStocks();
 
         long beginTime = System.currentTimeMillis();
 
@@ -152,23 +156,24 @@ public class ZtRepo implements AfterExtractor {
 
         loadForecasters(forecasters);
 
-        grab(1, 110);
-        System.out.println("抓取完成！耗时【" + (System.currentTimeMillis() - beginTime) + "】");
+        log.warn("抓取");
+        grab(1, 50);
 
         for (String forecasterName : stockWithForecasterMap.keySet()) {
-            System.out.println(forecasterName);
             List<String> stockNames = stockWithForecasterMap.get(forecasterName);
             for(String stockName : stockNames) {
-                System.out.println(stockName);
-
                 StockModel stock = stockDao.selectLikeName(stockName);
-                System.out.println(stock);
                 if(stock != null) {
                     stockDao.update(stock.getCode());
                 }
 
             }
-            System.out.println();
         }
+
+        log.warn("初始化预测结束！耗时【" + (System.currentTimeMillis() - beginTime) + "】");
+    }
+
+    public static void main(String[] args) {
+        initSelectedStocks();
     }
 }

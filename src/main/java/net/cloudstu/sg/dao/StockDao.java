@@ -23,4 +23,6 @@ public interface StockDao {
     int update(@Param(value = "code") String code);
 
     List<StockModel> selectMonitored();
+
+    int resetSelectedStocks();
 }

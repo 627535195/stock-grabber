@@ -41,6 +41,9 @@ public class MonitoredStockLoader {
 
         StockDao stockDao = SpringUtil.getBean(StockDao.class);
 
+        //初始化被选中的股票
+        ZtRepo.initSelectedStocks();
+
         List<StockModel> stocks = stockDao.selectMonitored();
 
         if(StringUtils.isEmpty(stocks)) {
