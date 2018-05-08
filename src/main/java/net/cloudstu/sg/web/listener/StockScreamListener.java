@@ -1,5 +1,6 @@
 package net.cloudstu.sg.web.listener;
 
+import lombok.extern.slf4j.Slf4j;
 import net.cloudstu.sg.grab.MonitoredStockLoader;
 import net.cloudstu.sg.grab.ScreamStockRepo;
 import net.cloudstu.sg.util.SimpleTimer;
@@ -18,6 +19,7 @@ import java.util.TimerTask;
  * @author zhiming.li
  * @date 2018/4/23
  */
+@Slf4j
 public class StockScreamListener implements ServletContextListener {
     @Override
     public void contextInitialized(ServletContextEvent servletContextEvent) {
@@ -33,7 +35,11 @@ public class StockScreamListener implements ServletContextListener {
             @Override
             public void run() {
                 ScreamStockRepo.existedTransactionCodes.clear();
+                log.warn("清除交易过的代码集合。");
                 ScreamStockRepo.priceMap.clear();
+                ScreamStockRepo.rangeMap.clear();
+                log.warn("清除股票振幅数据集合。");
+
             }
         }, time);
 
@@ -41,28 +47,10 @@ public class StockScreamListener implements ServletContextListener {
             @Override
             public void run() {
                 if(TransactionTimeUtil.isTransactionTime()) {
-                    ScreamStockRepo.testScream(getCodes(), 1.2, 5);
+                    ScreamStockRepo.testScream(getCodes(), 5);
                 }
             }
         }, 2000L, 5000L);
-
-        SimpleTimer.scheduleAtFixedRate(new TimerTask() {
-            @Override
-            public void run() {
-                if(TransactionTimeUtil.isTransactionTime()) {
-                    ScreamStockRepo.testScream(getCodes(), 1.5, 30);
-                }
-            }
-        }, 2000L, 30000L);
-
-        SimpleTimer.scheduleAtFixedRate(new TimerTask() {
-            @Override
-            public void run() {
-                if(TransactionTimeUtil.isTransactionTime()) {
-                    ScreamStockRepo.testScream(getCodes(), 2, 60);
-                }
-            }
-        }, 2000L, 60000L);
     }
 
     @Override

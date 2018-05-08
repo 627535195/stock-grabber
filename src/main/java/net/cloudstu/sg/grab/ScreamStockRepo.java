@@ -1,6 +1,7 @@
 package net.cloudstu.sg.grab;
 
 import lombok.extern.slf4j.Slf4j;
+import net.cloudstu.sg.util.LimitQueue;
 import net.cloudstu.sg.util.ShiPanEUtil;
 import net.cloudstu.sg.util.sinastock.StockRealTimeInfoTemplate;
 import net.cloudstu.sg.util.sinastock.data.StockData;
@@ -29,14 +30,15 @@ public class ScreamStockRepo {
 
     public static ConcurrentHashMap<String, Double> priceMap = new ConcurrentHashMap<>();
 
+    public static ConcurrentHashMap<String, LimitQueue[]> rangeMap = new ConcurrentHashMap<>();
+
     /**
      * 看是否尖叫
      *
      * @param codes
-     * @param referenceRange 参考量
      * @param seconds 频率
      */
-    public static void testScream(Set<String> codes, double referenceRange, int seconds) {
+    public static void testScream(Set<String> codes, int seconds) {
         if (CollectionUtils.isEmpty(codes)) {
             return;
         }
@@ -45,28 +47,82 @@ public class ScreamStockRepo {
             StockRealTimeInfoTemplate.get(code, response -> {
                 StockData data = response.getData();
                 double range = getRange(code, data.getSwing());
+                setRange(code, data.getSwing(), seconds);
 
-                if (range > referenceRange && existedTransactionCodes.add(code)) {
+                if ((range > 1.2 || testRange(code)) && existedTransactionCodes.add(code)) {
                     ShiPanEUtil.buy(code, getAmount(data.getCurrentPrice()));
                     log.warn("尖叫交易【{}】", code);
                 }
 
-                swingLog.info("{},{},{}", code, range, seconds);
-
-
-//                if(seconds>10) {
-//                    SwingModel swing = new SwingModel();
-//                    swing.setCode(code);
-//                    swing.setSeconds(seconds);
-//                    swing.setSwing(range);
-//                    SpringUtil.getBean(SwingDao.class).insert(swing);
-//                }
             });
         });
     }
 
     /**
-     * 涨幅
+     * 将股票浮动放入队列，以获得特定时间比如30s 60s的浮动
+     *
+     * @param code     股票代码
+     * @param nowSwing 当前价格
+     * @param seconds  获取股票浮动的频率
+     */
+    private static void setRange(String code, double nowSwing, int seconds) {
+        if (!rangeMap.containsKey(code)) {
+            LimitQueue<Double>[] lqArray = new LimitQueue[]{new LimitQueue<>(30 / seconds), new LimitQueue<>(60 / seconds), new LimitQueue<>(90 / seconds)};
+            lqArray[0].offer(nowSwing);
+            lqArray[1].offer(nowSwing);
+            lqArray[2].offer(nowSwing);
+            rangeMap.put(code, lqArray);
+            return;
+        }
+
+        LimitQueue<Double>[] lqArray = rangeMap.get(code);
+        lqArray[0].offer(nowSwing);
+        lqArray[1].offer(nowSwing);
+        lqArray[2].offer(nowSwing);
+    }
+
+    /**
+     * 测试特定区间内的涨幅是否达标
+     *
+     * @param code 股票代码
+     * @return
+     */
+    private static boolean testRange(String code) {
+        LimitQueue<Double>[] lqArray = rangeMap.get(code);
+        if (lqArray == null || lqArray.length != 3) {
+            return false;
+        }
+
+        if (lqArray[0].isFull()) {
+            double range = lqArray[0].getLast() - lqArray[0].getFirst();
+            swingLog.info("{},{},{}", code, range, 30);
+            if (range > 1.2) {
+                return true;
+            }
+        }
+
+        if (lqArray[1].isFull()) {
+            double range = lqArray[1].getLast() - lqArray[1].getFirst();
+            swingLog.info("{},{},{}", code, range, 60);
+            if (range > 1.5) {
+                return true;
+            }
+        }
+
+        if (lqArray[2].isFull()) {
+            double range = lqArray[2].getLast() - lqArray[2].getFirst();
+            swingLog.info("{},{},{}", code, range, 90);
+            if (range > 1.8) {
+                return true;
+            }
+        }
+
+        return false;
+
+    }
+
+    /**
+     * 按特定频率的每次涨幅
      *
      * @param code
      * @param nowSwing
@@ -89,7 +145,7 @@ public class ScreamStockRepo {
      * @return
      */
     private static int getAmount(double nowPrice) {
-        return (int) Math.round(200/nowPrice) * 100;
+        return (int) Math.round(200 / nowPrice) * 100;
     }
 
     public static void main(String[] args) {
