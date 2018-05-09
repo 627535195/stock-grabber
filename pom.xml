@@ -18,6 +18,7 @@
         <spring.version>4.3.16.RELEASE</spring.version>
         <webmagic.version>0.7.3</webmagic.version>
         <jetty.version>9.4.0.v20161208</jetty.version>
+        <guava.version>15.0</guava.version>
     </properties>
 
     <dependencies>
@@ -153,6 +154,12 @@
             <groupId>com.github.binarywang</groupId>
             <artifactId>weixin-java-cp</artifactId>
             <version>2.9.0</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.google.guava</groupId>
+            <artifactId>guava</artifactId>
+            <version>${guava.version}</version>
         </dependency>
 
         <dependency>

@@ -19,7 +19,7 @@ public class LimitQueue<E> {
 	/**
 	 * 入列：当队列大小已满时，把队头的元素poll掉
 	 */
-	public synchronized void offer(E e){
+	public void offer(E e){
 		if(queue.size() >= limit){
 			queue.poll();
 		}

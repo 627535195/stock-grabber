@@ -38,7 +38,7 @@ public class ScreamStockRepo {
      * @param codes
      * @param seconds 频率
      */
-    public static void testScream(Set<String> codes, int seconds) {
+    public synchronized static void testScream(Set<String> codes, int seconds) {
         if (CollectionUtils.isEmpty(codes)) {
             return;
         }

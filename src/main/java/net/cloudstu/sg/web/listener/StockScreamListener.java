@@ -47,10 +47,16 @@ public class StockScreamListener implements ServletContextListener {
             @Override
             public void run() {
                 if(TransactionTimeUtil.isTransactionTime()) {
-                    ScreamStockRepo.testScream(getCodes(), 5);
+                    try {
+                        long beginTime = System.currentTimeMillis();
+                        ScreamStockRepo.testScream(getCodes(), 10);
+                        log.warn("cost {} ms", (System.currentTimeMillis()-beginTime));
+                    }catch (Exception e) {
+                        log.error("监控失败！", e);
+                    }
                 }
             }
-        }, 2000L, 5000L);
+        }, 2000L, 10000L);
     }
 
     @Override
