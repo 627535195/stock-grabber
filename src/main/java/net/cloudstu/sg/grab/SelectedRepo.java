@@ -27,6 +27,7 @@ public class SelectedRepo {
 
         for(StockModel stock : selectedStocks) {
             SinaStockResponse res = SinaStockClient.getStockData(stock.getCode());
+//            System.out.println(stock.getCode());
             System.out.println(String.format("%s(%s): %s", stock.getName(), stock.getCode(), res.getData().getSwing()));
         }
     }

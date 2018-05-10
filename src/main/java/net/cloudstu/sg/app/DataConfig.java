@@ -31,17 +31,29 @@ public class DataConfig {
 //
 //        return dataSource;
 //    }
-
     @Bean
     public DataSource dataSource() {
         DruidDataSource dataSource = new DruidDataSource();
         dataSource.setDriverClassName("com.mysql.jdbc.Driver");
-        dataSource.setUsername("pdf");
-        dataSource.setPassword("pdfpassword");
-        dataSource.setUrl("jdbc:mysql://172.16.3.251:3306/pdf?useUnicode=true&amp;characterEncoding=UTF-8");
+        dataSource.setUsername("root");
+        dataSource.setPassword("8467101@lzm");
+        dataSource.setUrl("jdbc:mysql://rm-2ze4480213lzngcu8.mysql.rds.aliyuncs.com:3306/stock_grabber?useUnicode=true&amp;characterEncoding=UTF-8");
 
         return dataSource;
     }
+
+
+//
+//    @Bean
+//    public DataSource dataSource() {
+//        DruidDataSource dataSource = new DruidDataSource();
+//        dataSource.setDriverClassName("com.mysql.jdbc.Driver");
+//        dataSource.setUsername("pdf");
+//        dataSource.setPassword("pdfpassword");
+//        dataSource.setUrl("jdbc:mysql://172.16.3.251:3306/pdf?useUnicode=true&amp;characterEncoding=UTF-8");
+//
+//        return dataSource;
+//    }
 
     @Bean
     public DataSourceTransactionManager transactionManager() {
