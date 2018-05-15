@@ -26,10 +26,6 @@ public class StockScreamListener implements ServletContextListener {
 
         //每天的09：25：00执行清理交易队列
         Calendar calendar = Calendar.getInstance();
-        calendar.set(Calendar.HOUR_OF_DAY, 9); // 控制时
-        calendar.set(Calendar.MINUTE, 25);    // 控制分
-        calendar.set(Calendar.SECOND, 0);    // 控制秒
-        Date time = calendar.getTime();     // 得出执行任务的时间,此处为今天的09：25：00
 
         SimpleTimer.scheduleAtTime(new TimerTask() {
             @Override
@@ -41,7 +37,7 @@ public class StockScreamListener implements ServletContextListener {
                 log.warn("清除股票振幅数据集合。");
 
             }
-        }, time);
+        }, 9, 25);
 
         SimpleTimer.scheduleAtFixedRate(new TimerTask() {
             @Override

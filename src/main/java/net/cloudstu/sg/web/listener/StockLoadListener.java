@@ -25,11 +25,6 @@ public class StockLoadListener implements ServletContextListener {
     public void contextInitialized(ServletContextEvent servletContextEvent) {
 
         //每天的09：25：00执行load任务
-        Calendar calendar = Calendar.getInstance();
-        calendar.set(Calendar.HOUR_OF_DAY, 9); // 控制时
-        calendar.set(Calendar.MINUTE, 25);    // 控制分
-        calendar.set(Calendar.SECOND, 0);    // 控制秒
-        Date time = calendar.getTime();     // 得出执行任务的时间,此处为今天的09：25：00
 
         SimpleTimer.scheduleAtTime(new TimerTask() {
             @Override
@@ -40,7 +35,7 @@ public class StockLoadListener implements ServletContextListener {
                 MonitoredStockLoader.load();
                 log.warn("初始化涨停预测完成！【{}】", ScreamStockRepo.codes.size());
             }
-        }, time);
+        }, 9, 25);
 
         //开盘后的补充预测
         SimpleTimer.scheduleAtFixedRate(new TimerTask() {
