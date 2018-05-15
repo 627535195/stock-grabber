@@ -8,11 +8,14 @@
         <result column="name" property="name" jdbcType="VARCHAR"/>
         <result column="now_price" property="nowPrice" jdbcType="DOUBLE"/>
         <result column="expect_price" property="expectPrice" jdbcType="DOUBLE"/>
+        <result column="hold" property="hold" jdbcType="INTEGER"/>
+        <result column="available_hold" property="availableHold" jdbcType="INTEGER"/>
         <result column="update_time" property="updateTime" jdbcType="TIMESTAMP"/>
+        <result column="sell" property="sell" jdbcType="BIT"/>
     </resultMap>
 
     <sql id="stock_hold_fields">
-        code,name,now_price,expect_price,update_time
+        code,name,now_price,expect_price,hold,available_hold,update_time,sell
     </sql>
 
     <select id="selectAll" resultMap="stockHoldResultMap">
@@ -20,4 +23,13 @@
         <include refid="stock_hold_fields"/>
         FROM stock_hold
     </select>
+
+    <insert id="insert" parameterType="stockHoldModel">
+        insert into stock_hold (<include refid="stock_hold_fields"/>)
+        values (#{code}, #{name}, #{nowPrice}, #{expectPrice}, #{hold}, #{availableHold}, #{updateTime})
+    </insert>
+
+    <delete id="clear">
+        delete from stock_hold
+    </delete>
 </mapper>

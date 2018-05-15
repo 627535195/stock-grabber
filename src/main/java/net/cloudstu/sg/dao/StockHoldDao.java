@@ -12,7 +12,7 @@ import java.util.List;
  * @date 2018/4/19
  */
 @Repository
-public interface StockHoldDao{
+public interface StockHoldDao {
 
     /**
      * 获取所有持仓股票
@@ -20,4 +20,18 @@ public interface StockHoldDao{
      * @return
      */
     List<StockHoldModel> selectAll();
+
+    /**
+     * 插入持仓股票
+     *
+     * @param stockHold
+     */
+    int insert(StockHoldModel stockHold);
+
+    /**
+     * 清空持仓股票
+     *
+     * @return
+     */
+    int clear();
 }

@@ -17,5 +17,8 @@ public class StockHoldModel {
     private String name;
     private double nowPrice;
     private double expectPrice;
+    private int hold;
+    private int availableHold;
     private Date updateTime;
+    private boolean sell;
 }

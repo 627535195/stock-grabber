@@ -2,6 +2,7 @@ package net.cloudstu.sg.web.listener;
 
 import net.cloudstu.sg.grab.StockHoldRepo;
 import net.cloudstu.sg.util.SimpleTimer;
+import net.cloudstu.sg.util.TransactionTimeUtil;
 
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
@@ -16,20 +17,33 @@ import java.util.TimerTask;
 public class StockHoldListener implements ServletContextListener {
     @Override
     public void contextInitialized(ServletContextEvent servletContextEvent) {
-        SimpleTimer.scheduleAtFixedRate(new TimerTask() {
-            @Override
-            public void run() {
-                StockHoldRepo.monitor();
-            }
-        }, 2000L, 10000L);
 
-        // 10分钟一次清理报警集合， 也就是10分钟依然如此会再报警
+        // 10秒启动延迟，交易期间每10分钟刷新一次持仓
         SimpleTimer.scheduleAtFixedRate(new TimerTask() {
             @Override
             public void run() {
-                StockHoldRepo.holdNoticedSet.clear();
+                if(TransactionTimeUtil.isTransactionTime()) {
+                    StockHoldRepo.refreshHoldStocks();
+                }
             }
-        }, 2000L, 10*60*1000L);
+        }, 10000L, 10*60*1000L);
+
+
+
+//        SimpleTimer.scheduleAtFixedRate(new TimerTask() {
+//            @Override
+//            public void run() {
+//                StockHoldRepo.monitor();
+//            }
+//        }, 2000L, 10000L);
+//
+//        // 10分钟一次清理报警集合， 也就是10分钟依然如此会再报警
+//        SimpleTimer.scheduleAtFixedRate(new TimerTask() {
+//            @Override
+//            public void run() {
+//                StockHoldRepo.holdNoticedSet.clear();
+//            }
+//        }, 2000L, 10*60*1000L);
 
     }
 
