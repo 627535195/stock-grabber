@@ -19,8 +19,8 @@ import java.util.*;
 @Slf4j
 public abstract class ShiPanEUtil {
 
-    public static String API_URL = "http://39.105.55.173:8888/%s";
-//    public static String API_URL = "http://localhost:8888/%s";
+//    public static String API_URL = "http://39.105.55.173:8888/%s";
+    public static String API_URL = "http://localhost:8888/%s";
     /**
      * 定量定价卖出
      *
