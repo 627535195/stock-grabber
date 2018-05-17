@@ -26,7 +26,7 @@
 
     <insert id="insert" parameterType="stockHoldModel">
         insert into stock_hold (<include refid="stock_hold_fields"/>)
-        values (#{code}, #{name}, #{nowPrice}, #{expectPrice}, #{hold}, #{availableHold}, #{updateTime})
+        values (#{code}, #{name}, #{nowPrice}, #{expectPrice}, #{hold}, #{availableHold}, #{updateTime}, 0)
     </insert>
 
     <delete id="clear">
