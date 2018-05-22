@@ -10,5 +10,6 @@ public class StockData {
     private double currentPrice;
     private double swing;
     private double openPrice;
+    private double openSwing;
     private long amount;
 }

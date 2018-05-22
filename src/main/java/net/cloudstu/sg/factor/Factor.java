@@ -14,6 +14,6 @@ public interface Factor {
      *
      * @return
      */
-    boolean isSatisfied(StockData data);
+    boolean isSatisfied(String code, StockData data);
 
 }

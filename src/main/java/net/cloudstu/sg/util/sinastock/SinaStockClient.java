@@ -98,6 +98,12 @@ public class SinaStockClient {
 		sd.setSwing(result.doubleValue());
 
 		sd.setOpenPrice(Double.parseDouble(attrs[1]));
+
+		BigDecimal b3 = new BigDecimal(attrs[1]);
+		result = b3.subtract(b1).divide(b1, 4, BigDecimal.ROUND_HALF_UP).multiply(BigDecimal.TEN).multiply
+				(BigDecimal.TEN);
+		sd.setOpenSwing(result.doubleValue());
+
 		sd.setAmount(Long.parseLong(attrs[8]));
 
 		return  new SinaStockResponse(SinaStockResponse.SUCCESS, responseContent, sd);
