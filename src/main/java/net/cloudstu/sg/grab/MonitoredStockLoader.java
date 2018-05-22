@@ -25,14 +25,14 @@ public class MonitoredStockLoader {
 
     //TODO 从数据库中加载
     static {
-        forecasters.add("今古传奇吗");
         forecasters.add("maosc01");
-        forecasters.add("天赋闲荡");
-        forecasters.add("股道之友");
-        forecasters.add("一字连板");
+        forecasters.add("cyq_3");
+        forecasters.add("三严三实");
+        forecasters.add("招牛进宝");
+        forecasters.add("潘前豹");
         forecasters.add("不是我迷恋花");
-        forecasters.add("xcr033@sina.com");
-        forecasters.add("品桦Ph");
+        forecasters.add("一字连板");
+        forecasters.add("小鹏买好运来");
     }
 
     public static void load() {

@@ -24,6 +24,8 @@ public class ScreamStockRepo {
 
     public final static Logger swingLog = LoggerFactory.getLogger("swingLog");
 
+    public final static Logger transactionLog = LoggerFactory.getLogger("transactionLog");
+
     public static Set<String> codes = new HashSet<>();
 
     public static Set<String> existedTransactionCodes = new HashSet<>();
@@ -51,7 +53,7 @@ public class ScreamStockRepo {
 
                 if ((range > 1.2 || testRange(code)) && existedTransactionCodes.add(code)) {
                     ShiPanEUtil.buy(code, getAmount(data.getCurrentPrice()));
-                    log.warn("尖叫交易【{}】", code);
+                    transactionLog.warn("尖叫交易【{}】", code);
                 }
 
             });

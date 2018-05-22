@@ -74,6 +74,18 @@
         <appender-ref ref ="swing"/>
     </appender>
 
+    <appender name="transaction" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${log_base}/transaction.log</file>
+        <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+            <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} {%thread} %-5level %logger{50} - %msg%n</pattern>
+        </encoder>
+
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <FileNamePattern>${log_base}/otherdays/transaction.%d{yyyy-MM-dd}.log</FileNamePattern>
+            <MaxHistory>30</MaxHistory>
+        </rollingPolicy>
+    </appender>
+
 
     <root level="${log.level}">
 <!--        <appender-ref ref="console"/>-->
@@ -83,6 +95,10 @@
 
     <logger name="swingLog" level="INFO" additivity="false">
         <appender-ref ref="async_swing"/>
+    </logger>
+
+    <logger name="transactionLog" level="INFO" additivity="false">
+        <appender-ref ref="transaction"/>
     </logger>
 
 </configuration>

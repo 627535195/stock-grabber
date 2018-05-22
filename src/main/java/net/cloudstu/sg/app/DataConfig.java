@@ -27,7 +27,7 @@ public class DataConfig {
 //        dataSource.setDriverClassName("com.mysql.jdbc.Driver");
 //        dataSource.setUsername("root");
 //        dataSource.setPassword("root");
-//        dataSource.setUrl("jdbc:mysql://localhost:3306/prediction?useUnicode=true&amp;characterEncoding=UTF-8");
+//        dataSource.setUrl("jdbc:mysql://localhost:3306/stock_grabber?useUnicode=true&amp;characterEncoding=UTF-8");
 //
 //        return dataSource;
 //    }
