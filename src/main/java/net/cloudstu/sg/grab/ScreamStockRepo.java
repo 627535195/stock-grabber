@@ -1,6 +1,7 @@
 package net.cloudstu.sg.grab;
 
 import lombok.extern.slf4j.Slf4j;
+import net.cloudstu.sg.factor.FactorValidator;
 import net.cloudstu.sg.util.LimitQueue;
 import net.cloudstu.sg.util.ShiPanEUtil;
 import net.cloudstu.sg.util.sinastock.StockRealTimeInfoTemplate;
@@ -51,7 +52,9 @@ public class ScreamStockRepo {
                 double range = getRange(code, data.getSwing());
                 setRange(code, data.getSwing(), seconds);
 
-                if ((range > 1.2 || testRange(code)) && existedTransactionCodes.add(code)) {
+                if (FactorValidator.validate(data)
+                        && (range > 1.2 || testRange(code))
+                        && existedTransactionCodes.add(code)) {
                     ShiPanEUtil.buy(code, getAmount(data.getCurrentPrice()));
                     transactionLog.warn("尖叫交易【{}】", code);
                 }

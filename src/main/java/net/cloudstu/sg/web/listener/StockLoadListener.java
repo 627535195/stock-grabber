@@ -3,6 +3,7 @@ package net.cloudstu.sg.web.listener;
 import lombok.extern.slf4j.Slf4j;
 import net.cloudstu.sg.grab.MonitoredStockLoader;
 import net.cloudstu.sg.grab.ScreamStockRepo;
+import net.cloudstu.sg.grab.StockHoldRepo;
 import net.cloudstu.sg.util.ShiPanEUtil;
 import net.cloudstu.sg.util.SimpleTimer;
 import net.cloudstu.sg.util.TransactionTimeUtil;
@@ -31,7 +32,7 @@ public class StockLoadListener implements ServletContextListener {
             public void run() {
 //                测试交易接口
                 ShiPanEUtil.buy("000001", 100);
-
+                StockHoldRepo.refreshHoldStocks();
                 MonitoredStockLoader.load();
                 log.warn("初始化涨停预测完成！【{}】", ScreamStockRepo.codes.size());
             }
