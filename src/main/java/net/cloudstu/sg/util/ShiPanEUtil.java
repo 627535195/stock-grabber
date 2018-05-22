@@ -45,7 +45,7 @@ public abstract class ShiPanEUtil {
         try {
             restTemplate.postForObject(url, request, String.class);
         }catch (Exception e) {
-            log.error("交易异常！", e);
+            log.error("卖出异常！ {}", code, ExceptionUtil.getStackTraceAsString(e));
         }
     }
 
@@ -71,7 +71,7 @@ public abstract class ShiPanEUtil {
         try {
             restTemplate.postForObject(url, request, String.class);
         }catch (Exception e) {
-            log.error("交易异常！", e);
+            log.error("卖出异常！ {}", code, ExceptionUtil.getStackTraceAsString(e));
         }
     }
 
@@ -97,7 +97,7 @@ public abstract class ShiPanEUtil {
         try {
             restTemplate.postForObject(url, request, String.class);
         }catch (Exception e) {
-            log.error("交易异常！", e);
+            log.error("买入异常！ {}", code, ExceptionUtil.getStackTraceAsString(e));
         }
     }
 
@@ -122,7 +122,7 @@ public abstract class ShiPanEUtil {
         try {
             restTemplate.postForObject(url, request, String.class);
         }catch (Exception e) {
-            log.error("交易异常！", e);
+            log.error("买入异常！ {}", code, ExceptionUtil.getStackTraceAsString(e));
         }
 
     }
@@ -137,7 +137,7 @@ public abstract class ShiPanEUtil {
         try {
             restTemplate.delete(url);
         }catch (Exception e) {
-            log.error("交易异常！", e);
+            log.error("撤销所有委托异常！", e);
         }
     }
 
