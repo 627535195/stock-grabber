@@ -98,7 +98,7 @@ public class ScreamStockRepo {
         if (lqArray[0].isFull()) {
             double range = lqArray[0].getLast() - lqArray[0].getFirst();
             swingLog.info("{},{},{}", code, range, 30);
-            if (range > 1.2) {
+            if (range > 1.5) {
                 return true;
             }
         }
@@ -106,7 +106,7 @@ public class ScreamStockRepo {
         if (lqArray[1].isFull()) {
             double range = lqArray[1].getLast() - lqArray[1].getFirst();
             swingLog.info("{},{},{}", code, range, 60);
-            if (range > 1.5) {
+            if (range > 1.8) {
                 return true;
             }
         }
@@ -114,7 +114,7 @@ public class ScreamStockRepo {
         if (lqArray[2].isFull()) {
             double range = lqArray[2].getLast() - lqArray[2].getFirst();
             swingLog.info("{},{},{}", code, range, 90);
-            if (range > 1.8) {
+            if (range > 2) {
                 return true;
             }
         }
