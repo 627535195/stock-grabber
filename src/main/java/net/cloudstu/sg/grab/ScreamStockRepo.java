@@ -52,7 +52,7 @@ public class ScreamStockRepo {
                 double range = getRange(code, data.getSwing());
                 setRange(code, data.getSwing(), seconds);
 
-                if (FactorValidator.validate(data)
+                if (FactorValidator.validate(code, data)
                         && (range > 1.2 || testRange(code))
                         && existedTransactionCodes.add(code)) {
                     ShiPanEUtil.buy(code, getAmount(data.getCurrentPrice()));
