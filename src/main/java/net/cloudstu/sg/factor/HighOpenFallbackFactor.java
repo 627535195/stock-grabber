@@ -13,15 +13,16 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 public class HighOpenFallbackFactor implements Factor{
 
-    public ConcurrentHashMap<String, Double> maxMap = new ConcurrentHashMap<>();
+    public ConcurrentHashMap<String, Double> minMap = new ConcurrentHashMap<>();
+
     private static final double FACTOR = 3.0;
 
 
     @Override
     public boolean isSatisfied(String code, StockData data) {
-        double max = getMaxMap(code, data);
+        double min = getMinMap(code, data);
 
-        double fallback = max - data.getSwing();
+        double fallback = data.getOpenSwing() - min;
 
         if(fallback > FACTOR) {
             return false;
@@ -30,15 +31,15 @@ public class HighOpenFallbackFactor implements Factor{
         return true;
     }
 
-    private double getMaxMap(String code, StockData data) {
-        if(!maxMap.containsKey(code)) {
-            maxMap.put(code, Math.max(data.getSwing(), data.getOpenSwing()));
+    public double getMinMap(String code, StockData data) {
+        if(!minMap.containsKey(code)) {
+            minMap.put(code, data.getSwing());
         }else {
-            double max = maxMap.get(code);
-            maxMap.put(code, Math.max(data.getSwing(), max));
+            double min = minMap.get(code);
+            minMap.put(code, Math.min(data.getSwing(), min));
         }
 
-        return maxMap.get(code);
+        return minMap.get(code);
     }
 
 }
